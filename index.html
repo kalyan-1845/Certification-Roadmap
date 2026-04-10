@@ -30,6 +30,66 @@
             z-index: 99999;
         }
 
+        /* Cinematic Preloader */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+        }
+
+        .preloader-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 15px;
+            color: var(--accent-primary);
+            opacity: 0;
+            transform: scale(0.95);
+            animation: preloaderAnim 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+
+        .preloader-text::after {
+            content: '';
+            position: absolute;
+            left: -10%; bottom: -10px; width: 120%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            transform: scaleX(0);
+            animation: lineExpand 2.5s ease forwards;
+        }
+
+        @keyframes preloaderAnim {
+            0% { opacity: 0; transform: scale(0.95); letter-spacing: 10px; }
+            40% { opacity: 1; transform: scale(1); letter-spacing: 20px; text-shadow: 0 0 20px rgba(212,175,55,0.4); }
+            80% { opacity: 1; transform: scale(1); letter-spacing: 20px; }
+            100% { opacity: 0; transform: scale(1.05); letter-spacing: 25px; }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            40% { transform: scaleX(1); opacity: 1; }
+            80% { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(0); opacity: 0; }
+        }
+
+        /* Dynamic Glare */
+        .glare {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 50%);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -393,6 +453,10 @@
 </head>
 <body>
 
+    <div id="preloader">
+        <div class="preloader-text">BHOOMPALLY</div>
+    </div>
+
     <div class="bg-glow">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -413,14 +477,36 @@
     <!-- Modal -->
     <div class="modal" id="certModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="close-btn magnetic" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-body" id="modalBody">
                 <!-- Content injected here -->
             </div>
         </div>
     </div>
 
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
     <script>
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 2600);
+        });
+
+        // Init Smooth Scroll (Lenis)
+        const lenis = new Lenis({
+            duration: 1.5,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
         // Array of certification objects corresponding to real local files
         const certificates = [
             { 
@@ -510,10 +596,11 @@
             }
 
             card.innerHTML = `
+                <div class="glare"></div>
                 <div class="cert-thumbnail">
                     ${thumbnailHTML}
                     <div class="view-overlay">
-                        <button class="view-btn" onclick="openModal(${index})">
+                        <button class="view-btn magnetic" onclick="openModal(${index})">
                             <i class="fa-solid fa-eye"></i> View Certificate
                         </button>
                     </div>
@@ -532,7 +619,8 @@
 
             container.appendChild(card);
 
-            // 3D Tilt Effect
+            // 3D Tilt Effect & Glare
+            const glare = card.querySelector('.glare');
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -540,10 +628,14 @@
                 const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -10;
                 const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 10;
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                
+                glare.style.transform = `translate(${x - rect.width}px, ${y - rect.height}px)`;
+                glare.style.opacity = '1';
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                 card.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                glare.style.opacity = '0';
             });
             card.addEventListener('mouseenter', () => {
                 card.style.transition = 'transform 0.1s';
@@ -571,6 +663,22 @@
                     cursorGlow.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%)';
                     cursorGlow.style.width = '400px';
                     cursorGlow.style.height = '400px';
+                });
+            });
+
+            // Magnetic Hover Buttons Logic
+            document.querySelectorAll('.magnetic').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) - (rect.width / 2);
+                    const y = (e.clientY - rect.top) - (rect.height / 2);
+                    // Slow down the transition to lock it physically to mouse
+                    btn.style.transition = 'transform 0.1s ease-out';
+                    btn.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px) scale(1.05)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    btn.style.transform = 'translate(0px, 0px) scale(1)';
                 });
             });
         }, 500);
