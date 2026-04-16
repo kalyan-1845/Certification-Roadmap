@@ -3,98 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Certifications Portfolio</title>
+    <title>B. Kalyan Reddy — Certifications Portfolio</title>
+    <meta name="description" content="A curated showcase of professional certifications, hackathon achievements, AI training, and academic publications by Bhoompally Kalyan Reddy.">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #030303;
+            --bg-surface: #0a0a0a;
             --surface-color: rgba(15, 15, 15, 0.6);
             --surface-border: rgba(255, 255, 255, 0.04);
-            --text-primary: #f8f8f8;
-            --text-secondary: #8c8c8c;
+            --text-primary: #f0f0f0;
+            --text-secondary: #6e6e6e;
+            --text-tertiary: #444;
             --accent-primary: #D4AF37;
             --accent-secondary: #F3E5AB;
+            --accent-glow: rgba(212, 175, 55, 0.15);
             --gradient-accent: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            --gradient-accent-subtle: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(243,229,171,0.04));
+            --card-radius: 16px;
+            --transition-smooth: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--accent-primary), rgba(212,175,55,0.3));
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        /* Noise overlay */
         body::after {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-            opacity: 0.035;
+            opacity: 0.03;
             pointer-events: none;
             z-index: 99999;
         }
 
-        /* Cinematic Preloader */
+        /* ── PRELOADER ── */
         #preloader {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000;
             z-index: 1000000;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 1.5s ease, visibility 1.5s ease;
+            gap: 2rem;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+        }
+
+        .preloader-logo {
+            width: 60px; height: 60px;
+            border: 2px solid rgba(212,175,55,0.3);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spinLoader 1s linear infinite;
         }
 
         .preloader-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            letter-spacing: 15px;
+            letter-spacing: 12px;
             color: var(--accent-primary);
             opacity: 0;
-            transform: scale(0.95);
-            animation: preloaderAnim 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: preloaderFade 1.5s ease 0.3s forwards;
+        }
+
+        .preloader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+            overflow: hidden;
             position: relative;
         }
 
-        .preloader-text::after {
+        .preloader-bar::after {
             content: '';
             position: absolute;
-            left: -10%; bottom: -10px; width: 120%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            transform: scaleX(0);
-            animation: lineExpand 2.5s ease forwards;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--gradient-accent);
+            animation: loadBar 2s ease forwards;
         }
 
-        @keyframes preloaderAnim {
-            0% { opacity: 0; transform: scale(0.95); letter-spacing: 10px; }
-            40% { opacity: 1; transform: scale(1); letter-spacing: 20px; text-shadow: 0 0 20px rgba(212,175,55,0.4); }
-            80% { opacity: 1; transform: scale(1); letter-spacing: 20px; }
-            100% { opacity: 0; transform: scale(1.05); letter-spacing: 25px; }
-        }
+        @keyframes spinLoader { to { transform: rotate(360deg); } }
+        @keyframes preloaderFade { to { opacity: 1; } }
+        @keyframes loadBar { to { left: 0; } }
 
-        @keyframes lineExpand {
-            0% { transform: scaleX(0); }
-            40% { transform: scaleX(1); opacity: 1; }
-            80% { transform: scaleX(1); opacity: 1; }
-            100% { transform: scaleX(0); opacity: 0; }
-        }
-
-        /* Dynamic Glare */
-        .glare {
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 50%);
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ── GLOBAL RESET ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -104,73 +113,116 @@
             min-height: 100vh;
         }
 
-        /* Abstract glowing background */
+        /* ── PARTICLE CANVAS ── */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── BACKGROUND GLOWS ── */
         .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
+            z-index: 0;
             overflow: hidden;
-            background: #050505;
+            pointer-events: none;
         }
-        
+
         .blob {
             position: absolute;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float 20s infinite ease-in-out alternate;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 25s infinite ease-in-out alternate;
         }
 
         .blob-1 {
-            top: -10%; left: -10%;
+            top: -15%; left: -10%;
             width: 50vw; height: 50vw;
-            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
         }
 
         .blob-2 {
-            bottom: -10%; right: -10%;
-            width: 60vw; height: 60vw;
-            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
-            animation-delay: -5s;
+            bottom: -15%; right: -10%;
+            width: 55vw; height: 55vw;
+            background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
+            animation-delay: -8s;
+        }
+
+        .blob-3 {
+            top: 50%; left: 50%;
+            width: 40vw; height: 40vw;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(212,175,55,0.03) 0%, transparent 70%);
+            animation-delay: -15s;
         }
 
         @keyframes float {
             0% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.2) translate(5%, 5%); }
-            100% { transform: scale(0.9) translate(-5%, -5%); }
+            50% { transform: scale(1.15) translate(4%, 4%); }
+            100% { transform: scale(0.9) translate(-4%, -4%); }
         }
 
+        /* ── CURSOR GLOW ── */
+        #cursor-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.4s ease, height 0.4s ease, background 0.4s ease;
+        }
+
+        /* ── HEADER ── */
         header {
             text-align: center;
-            padding: 5rem 2rem 3rem;
+            padding: 6rem 2rem 2rem;
             position: relative;
+            z-index: 10;
         }
 
         .premium-pill {
-            display: inline-block;
-            padding: 0.5rem 2.5rem;
-            background: transparent;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 2rem;
+            background: var(--gradient-accent-subtle);
+            border: 1px solid rgba(212, 175, 55, 0.15);
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--accent-primary);
-            margin-bottom: 1.5rem;
-            position: relative;
-            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.05);
+            margin-bottom: 1.8rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .premium-pill i {
+            font-size: 0.6rem;
+            animation: pulseIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
         }
 
         h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #c4c4c4);
+            margin-bottom: 1.2rem;
+            background: linear-gradient(to right, #fff, #b0b0b0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
         }
 
         .highlight {
@@ -180,107 +232,249 @@
         }
 
         p.subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             font-weight: 300;
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 550px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
         }
 
+        /* ── STATS BAR ── */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .stat-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .stat-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.4rem;
+            font-weight: 500;
+        }
+
+        /* ── FILTER BAR ── */
+        .filter-section {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 0;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-pill {
+            padding: 0.55rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-pill::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+
+        .filter-pill:hover {
+            border-color: rgba(212,175,55,0.3);
+            color: var(--text-primary);
+        }
+
+        .filter-pill.active {
+            border-color: var(--accent-primary);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .filter-pill.active::before {
+            opacity: 1;
+        }
+
+        .filter-pill span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .filter-pill.active .filter-count {
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* ── MAIN ── */
         main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Grid */
-        .cert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2.5rem;
-        }
-
-        /* Certificate Card */
-        .cert-card {
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: translateY(40px);
-            animation: fadeUp 0.8s ease forwards;
-            border: 1px solid transparent;
-            background: linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
-                        var(--surface-border) border-box;
-            background-clip: padding-box, border-box;
-        }
-
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .cert-card:hover {
-            background: linear-gradient(#111, #080808) padding-box,
-                        linear-gradient(135deg, var(--accent-primary), rgba(255,255,255,0.05), var(--text-primary)) border-box;
-            background-clip: padding-box, border-box;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-            z-index: 20;
-        }
-
-        #cursor-glow {
-            position: fixed;
-            top: 0; left: 0;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            transition: width 0.3s, height 0.3s, background 0.3s;
-        }
-
-        header, main {
+            padding: 0 2rem 4rem;
             position: relative;
             z-index: 10;
         }
 
+        /* ── GRID ── */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        /* ── CERTIFICATE CARD ── */
+        .cert-card {
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s var(--transition-smooth);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(50px);
+            border: 1px solid transparent;
+            background:
+                linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)) border-box;
+        }
+
+        .cert-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.7s ease, transform 0.7s var(--transition-ease);
+        }
+
+        .cert-card.hidden-filter {
+            display: none;
+        }
+
+        .cert-card:hover {
+            background:
+                linear-gradient(#0f0f0f, #080808) padding-box,
+                linear-gradient(135deg, var(--accent-primary), rgba(255,255,255,0.08), var(--accent-secondary)) border-box;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(212,175,55,0.05);
+            z-index: 20;
+        }
+
+        /* ── GLARE ── */
+        .glare {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, transparent 50%);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        /* ── THUMBNAIL ── */
         .cert-thumbnail {
             width: 100%;
-            height: 220px;
+            height: 200px;
             position: relative;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid var(--surface-border);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
         .cert-thumbnail img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
-            opacity: 0.8;
+            transition: transform 0.6s var(--transition-ease), opacity 0.4s ease;
+            opacity: 0.85;
         }
 
         .cert-card:hover .cert-thumbnail img {
-            transform: scale(1.08);
-            opacity: 0.4;
+            transform: scale(1.1);
+            opacity: 0.3;
+        }
+
+        .pdf-icon-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
         }
 
         .pdf-icon {
-            font-size: 5rem;
+            font-size: 3.5rem;
             background: var(--gradient-accent);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            opacity: 0.9;
+            opacity: 0.8;
         }
 
-        /* View Button Overlay */
+        .pdf-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+
+        /* ── VIEW OVERLAY ── */
         .view-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -289,215 +483,511 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 0.4s ease;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
         }
 
-        .cert-card:hover .view-overlay {
-            opacity: 1;
-        }
+        .cert-card:hover .view-overlay { opacity: 1; }
 
         .view-btn {
             background: transparent;
             color: var(--text-primary);
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            border: 1px solid var(--accent-primary);
-            font-family: 'Outfit', sans-serif;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(212,175,55,0.5);
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            font-size: 0.95rem;
-            letter-spacing: 1.5px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 0.8rem;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 0 rgba(212,175,55,0);
+            gap: 0.7rem;
+            transform: translateY(15px);
+            transition: all 0.35s var(--transition-smooth);
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--surface-color);
-            border: 1px solid var(--surface-border);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 1000px;
-            height: 85vh;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: none;
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 10000;
-            transition: background 0.3s, transform 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(90deg);
-        }
-
-        .modal-body {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .modal-body img, .modal-body iframe {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 10px;
-            object-fit: contain;
-            border: none;
-            width: 100%;
-            height: 100%;
-        }
-
-        .cert-card:hover .view-btn {
-            transform: translateY(0);
-        }
+        .cert-card:hover .view-btn { transform: translateY(0); }
 
         .view-btn:hover {
-            box-shadow: inset 0 0 15px rgba(212,175,55,0.4);
-            background: rgba(212,175,55,0.1);
-            transform: scale(1.02) translateY(0);
+            background: rgba(212,175,55,0.15);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(212,175,55,0.2);
         }
 
-        /* Card Content */
+        /* ── CARD INFO ── */
         .cert-info {
-            padding: 1.5rem;
+            padding: 1.4rem 1.5rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 0.6rem;
         }
 
-        .cert-type {
-            font-size: 0.75rem;
+        .cert-meta-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .cert-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--accent-secondary);
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            background: var(--gradient-accent-subtle);
+            color: var(--accent-primary);
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+
+        .cert-type-badge i { font-size: 0.55rem; }
+
+        .cert-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
         }
 
         .cert-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 600;
             line-height: 1.4;
             color: var(--text-primary);
-            margin-bottom: 1rem;
         }
 
-        .file-meta {
-            font-size: 0.85rem;
+        .cert-issuer {
+            font-size: 0.8rem;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: auto;
         }
 
-        /* Responsive */
+        .cert-issuer i {
+            color: var(--accent-primary);
+            font-size: 0.7rem;
+        }
+
+        .cert-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .file-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            color: #4ade80;
+            font-weight: 500;
+        }
+
+        .verified-badge i { font-size: 0.6rem; }
+
+        /* ── MODAL ── */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 100000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .modal.active { display: flex; opacity: 1; }
+
+        .modal-content {
+            background: linear-gradient(145deg, #0c0c0c, #080808);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            width: 92%;
+            max-width: 1000px;
+            height: 85vh;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212,175,55,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            flex-shrink: 0;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .modal-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-nav-btn, .close-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.06);
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-nav-btn:hover, .close-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .close-btn:hover { transform: rotate(90deg); }
+
+        .modal-body {
+            width: 100%; flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        .modal-body img, .modal-body iframe {
+            max-width: 100%; max-height: 100%;
+            border-radius: 8px;
+            object-fit: contain;
+            border: none;
+            width: 100%; height: 100%;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .footer-brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--gradient-accent);
+            margin: 0 auto 1rem;
+            opacity: 0.4;
+        }
+
+        .footer-copy {
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            display: none;
+        }
+
+        .empty-state.visible { display: block; }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
+            header { padding: 4rem 1.5rem 1.5rem; }
+            h1 { font-size: 2.2rem; letter-spacing: -1px; }
+            p.subtitle { font-size: 0.95rem; margin-bottom: 2rem; }
+            .stats-bar { gap: 2rem; padding: 1.5rem 0; }
+            .stat-number { font-size: 2rem; }
+            .cert-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            main { padding: 0 1.5rem 3rem; }
+            .filter-section { padding: 1.5rem 1.5rem 0; }
+            .filter-bar { gap: 0.4rem; }
+            .filter-pill { padding: 0.45rem 1rem; font-size: 0.72rem; }
+            .modal-content { width: 96%; height: 90vh; border-radius: 14px; }
+            .modal-header { padding: 1rem; }
+            .modal-body { padding: 1rem; }
+            .cert-thumbnail { height: 180px; }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 3rem 1rem 1rem; }
+            h1 { font-size: 1.8rem; }
+            .premium-pill { font-size: 0.6rem; padding: 0.4rem 1.2rem; letter-spacing: 3px; }
+            .stats-bar { gap: 1.5rem; }
+            .stat-number { font-size: 1.6rem; }
+            .stat-label { font-size: 0.65rem; }
             .cert-grid { grid-template-columns: 1fr; }
+            main { padding: 0 1rem 2rem; }
+            .filter-section { padding: 1rem 1rem 0; }
+        }
+
+        /* ── ANIMATION UTILITY ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── KEYBOARD HINT ── */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(15,15,15,0.8);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeUp 0.5s ease 3.5s forwards;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+        }
+
+        .keyboard-hint span {
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
         }
     </style>
 </head>
 <body>
 
+    <!-- Preloader -->
     <div id="preloader">
+        <div class="preloader-logo"></div>
         <div class="preloader-text">BHOOMPALLY</div>
+        <div class="preloader-bar"></div>
     </div>
 
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Background Glows -->
     <div class="bg-glow">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
     </div>
 
+    <!-- Cursor Glow -->
+    <div id="cursor-glow"></div>
+
+    <!-- Header -->
     <header>
-        <div class="premium-pill">Welcome To</div>
-        <h1>Bhoompally's <span class="highlight">Space 1</span></h1>
-        <p class="subtitle">A curated collection of my professional achievements, online training, and recognitions.</p>
+        <div class="premium-pill">
+            <i class="fa-solid fa-gem"></i>
+            <span>Certification Portfolio</span>
+        </div>
+        <h1>Bhoompally's <span class="highlight">Achievements</span></h1>
+        <p class="subtitle">A curated gallery of professional certifications, hackathon victories, AI training, and academic publications.</p>
+
+        <div class="stats-bar">
+            <div class="stat-item" style="animation-delay: 0.1s">
+                <div class="stat-number" data-target="10">0</div>
+                <div class="stat-label">Certifications</div>
+            </div>
+            <div class="stat-item" style="animation-delay: 0.2s">
+                <div class="stat-number" data-target="5">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item" style="animation-delay: 0.3s">
+                <div class="stat-number" data-target="7">0</div>
+                <div class="stat-label">Issuers</div>
+            </div>
+            <div class="stat-item" style="animation-delay: 0.4s">
+                <div class="stat-number" data-target="2026">0</div>
+                <div class="stat-label">Latest Year</div>
+            </div>
+        </div>
     </header>
 
+    <!-- Filter Bar -->
+    <section class="filter-section">
+        <div class="filter-bar" id="filterBar">
+            <!-- Dynamically populated -->
+        </div>
+    </section>
+
+    <!-- Main Grid -->
     <main>
-        <div class="cert-grid" id="cert-container">
-            <!-- Cards generated dynamically -->
+        <div class="cert-grid" id="cert-container"></div>
+        <div class="empty-state" id="emptyState">
+            <i class="fa-regular fa-folder-open"></i>
+            <h3>No certificates found</h3>
+            <p>Try selecting a different category above.</p>
         </div>
     </main>
 
     <!-- Modal -->
     <div class="modal" id="certModal">
         <div class="modal-content">
-            <button class="close-btn magnetic" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-            <div class="modal-body" id="modalBody">
-                <!-- Content injected here -->
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Certificate</div>
+                <div class="modal-controls">
+                    <button class="modal-nav-btn" id="prevBtn" title="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="modal-nav-btn" id="nextBtn" title="Next"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="close-btn" id="closeBtn" title="Close (ESC)"><i class="fa-solid fa-xmark"></i></button>
+                </div>
             </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">B. KALYAN REDDY</div>
+        <div class="footer-text">Computer Science & Engineering • ACE Engineering College</div>
+        <div class="footer-links">
+            <a href="https://github.com/kalyan-1845" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/bhoompally-kalyan-reddy/" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="mailto:kalyanbhoompally@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-copy">&copy; 2026 All rights reserved</div>
+    </footer>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint" id="kbHint">
+        <kbd>ESC</kbd><span>Close</span>
+        <kbd>←</kbd><kbd>→</kbd><span>Navigate</span>
+    </div>
+
+    <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+
     <script>
-        // Preloader Logic
+        // ─── PRELOADER ───
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-            }, 2600);
+            }, 2400);
         });
 
-        // Init Smooth Scroll (Lenis)
+        // ─── LENIS SMOOTH SCROLL ───
         const lenis = new Lenis({
-            duration: 1.5,
+            duration: 1.4,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true
         });
@@ -507,93 +997,247 @@
         }
         requestAnimationFrame(raf);
 
-        // Array of certification objects corresponding to real local files
+        // ─── PARTICLE CANVAS ───
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0, mouseY = 0;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.05;
+                this.isGold = Math.random() < 0.15;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                if (this.isGold) {
+                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.5})`;
+                }
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        const particleCount = Math.min(80, Math.floor(window.innerWidth / 20));
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ─── CERTIFICATE DATA ───
         const certificates = [
-            { 
-                title: "Smart India Hackathon - Lexicon Legends", 
-                file: "B.Kalyan Reddy_Lexicon Legends SIH.pdf", 
-                type: "Certificate",
-                isPdf: true
+            {
+                title: "Smart India Hackathon — Lexicon Legends",
+                file: "B.Kalyan Reddy_Lexicon Legends SIH.pdf",
+                type: "Hackathon",
+                category: "hackathon",
+                isPdf: true,
+                issuer: "Government of India",
+                date: "2025",
+                icon: "fa-trophy"
             },
-            { 
-                title: "Introduction to Claude Certification", 
-                file: "certificate ( introduction to claude ).pdf", 
+            {
+                title: "Introduction to Claude",
+                file: "certificate ( introduction to claude ).pdf",
                 type: "AI Training",
-                isPdf: true
+                category: "ai",
+                isPdf: true,
+                issuer: "Anthropic",
+                date: "2025",
+                icon: "fa-robot"
             },
-            { 
-                title: "Claude 101 Certification", 
-                file: "certificate-(Claude-101).pdf", 
+            {
+                title: "Claude 101 — Foundations",
+                file: "certificate-(Claude-101).pdf",
                 type: "AI Training",
-                isPdf: true
+                category: "ai",
+                isPdf: true,
+                issuer: "Anthropic",
+                date: "2025",
+                icon: "fa-robot"
             },
-            { 
-                title: "IA Online Training", 
-                file: "IA Online Training Certificate.pdf", 
+            {
+                title: "IA Online Training Completion",
+                file: "IA Online Training Certificate.pdf",
                 type: "Online Course",
-                isPdf: true
+                category: "course",
+                isPdf: true,
+                issuer: "Industrial Training",
+                date: "2025",
+                icon: "fa-graduation-cap"
             },
-            { 
-                title: "International Journal Publication", 
-                file: "international journal paper certificate.pdf", 
+            {
+                title: "International Journal Paper Publication",
+                file: "international journal paper certificate.pdf",
                 type: "Publication",
-                isPdf: true
+                category: "publication",
+                isPdf: true,
+                issuer: "International Journal",
+                date: "2025",
+                icon: "fa-newspaper"
             },
-            { 
-                title: "OutSkill Training Certification", 
-                file: "OutSkill-Certificate.png.png", 
-                type: "Training",
-                isPdf: false
+            {
+                title: "Generative AI Mastermind",
+                file: "OutSkill-Certificate.png.png",
+                type: "AI Training",
+                category: "ai",
+                isPdf: false,
+                issuer: "Outskill",
+                date: "2025",
+                icon: "fa-brain"
             },
-            { 
-                title: "Professional Achievement", 
-                file: "Screenshot 2026-04-10 080549.png", 
-                type: "Certification",
-                isPdf: false
+            {
+                title: "CEREBRO: Gemini AI Challenge",
+                file: "cerebro .png",
+                type: "Hackathon",
+                category: "hackathon",
+                isPdf: false,
+                issuer: "Google • ACE Engineering College",
+                date: "Sep 2025",
+                icon: "fa-bolt"
             },
-            { 
-                title: "Skill Assessment Proficiency", 
-                file: "Screenshot 2026-04-10 080642.png", 
-                type: "Certification",
-                isPdf: false
+            {
+                title: "AWS Cloud Workshop — Participation",
+                file: "AWS cloud ace.png",
+                type: "Workshop",
+                category: "workshop",
+                isPdf: false,
+                issuer: "ACE Engineering College • CSE Dept",
+                date: "Feb 2026",
+                icon: "fa-cloud"
             },
-            { 
-                title: "Advanced Technical Badge", 
-                file: "Screenshot 2026-04-10 080714.png", 
-                type: "Certification",
-                isPdf: false
+            {
+                title: "CodeSprint 24HR Hackathon — Participation",
+                file: "cert of pertci VBIT.png",
+                type: "Hackathon",
+                category: "hackathon",
+                isPdf: false,
+                issuer: "Vignana Bharathi Institute of Technology",
+                date: "Feb 2026",
+                icon: "fa-code"
             },
-            { 
-                title: "Core Competency Certificate", 
-                file: "Screenshot 2026-04-10 080738.png", 
-                type: "Certification",
-                isPdf: false
+            {
+                title: "CodeSprint Hackathon — Appreciation Award",
+                file: "certifi of 4th VBIT.png",
+                type: "Hackathon",
+                category: "hackathon",
+                isPdf: false,
+                issuer: "Vignana Bharathi Institute of Technology",
+                date: "Feb 2026",
+                icon: "fa-award"
             },
-            { 
-                title: "Specialized Training Completion", 
-                file: "Screenshot 2026-04-10 080859.png", 
-                type: "Certification",
-                isPdf: false
+            {
+                title: "NCASCTE-2026 — Research Paper Presentation",
+                file: "cert of perti ace research.png",
+                type: "Publication",
+                category: "publication",
+                isPdf: false,
+                issuer: "ACE Engineering College • EEE Dept",
+                date: "Mar 2026",
+                icon: "fa-flask"
             }
         ];
 
+        // ─── FILTER SYSTEM ───
+        const categories = [
+            { key: 'all', label: 'All' },
+            { key: 'hackathon', label: 'Hackathons' },
+            { key: 'ai', label: 'AI Training' },
+            { key: 'workshop', label: 'Workshops' },
+            { key: 'course', label: 'Courses' },
+            { key: 'publication', label: 'Publications' }
+        ];
+
+        const filterBar = document.getElementById('filterBar');
+        let activeFilter = 'all';
+
+        categories.forEach(cat => {
+            const count = cat.key === 'all'
+                ? certificates.length
+                : certificates.filter(c => c.category === cat.key).length;
+
+            if (cat.key !== 'all' && count === 0) return;
+
+            const pill = document.createElement('button');
+            pill.className = `filter-pill ${cat.key === 'all' ? 'active' : ''}`;
+            pill.dataset.filter = cat.key;
+            pill.innerHTML = `<span>${cat.label}<span class="filter-count">${count}</span></span>`;
+            pill.addEventListener('click', () => {
+                activeFilter = cat.key;
+                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                filterCards();
+            });
+            filterBar.appendChild(pill);
+        });
+
+        function filterCards() {
+            const cards = document.querySelectorAll('.cert-card');
+            let visibleCount = 0;
+            cards.forEach((card, i) => {
+                const cert = certificates[i];
+                if (activeFilter === 'all' || cert.category === activeFilter) {
+                    card.classList.remove('hidden-filter');
+                    visibleCount++;
+                    // Re-trigger animation
+                    card.style.transitionDelay = `${visibleCount * 0.05}s`;
+                } else {
+                    card.classList.add('hidden-filter');
+                }
+            });
+            document.getElementById('emptyState').classList.toggle('visible', visibleCount === 0);
+        }
+
+        // ─── BUILD CARDS ───
         const container = document.getElementById('cert-container');
 
         certificates.forEach((cert, index) => {
             const card = document.createElement('div');
             card.className = 'cert-card';
-            card.style.animationDelay = `${index * 0.08}s`;
 
-            // If it's a PDF, we show a sleek PDF icon, otherwise we load the actual image thumbnail
-            const thumbnailHTML = cert.isPdf 
-                ? `<i class="fa-solid fa-file-pdf pdf-icon"></i>`
-                : `<img src="${cert.file}" alt="${cert.title}">`;
+            const thumbnailHTML = cert.isPdf
+                ? `<div class="pdf-icon-wrapper">
+                       <i class="fa-solid fa-file-pdf pdf-icon"></i>
+                       <span class="pdf-label">PDF Document</span>
+                   </div>`
+                : `<img src="${cert.file}" alt="${cert.title}" loading="lazy">`;
 
-            // Get file extension for the meta tag
             let extension = cert.file.split('.').pop().toUpperCase();
-            if (cert.file.includes('.png.png')) {
-                extension = 'PNG'; // Clean duplicate extension edge case
-            }
+            if (cert.file.includes('.png.png')) extension = 'PNG';
 
             card.innerHTML = `
                 <div class="glare"></div>
@@ -601,39 +1245,52 @@
                     ${thumbnailHTML}
                     <div class="view-overlay">
                         <button class="view-btn magnetic" onclick="openModal(${index})">
-                            <i class="fa-solid fa-eye"></i> View Certificate
+                            <i class="fa-solid fa-expand"></i> View Certificate
                         </button>
                     </div>
                 </div>
                 <div class="cert-info">
-                    <div>
-                        <div class="cert-type">${cert.type}</div>
-                        <h3 class="cert-title">${cert.title}</h3>
+                    <div class="cert-meta-top">
+                        <div class="cert-type-badge">
+                            <i class="fa-solid ${cert.icon}"></i>
+                            ${cert.type}
+                        </div>
+                        <span class="cert-date">${cert.date}</span>
                     </div>
-                    <div class="file-meta">
-                        <i class="fa-solid ${cert.isPdf ? 'fa-file-pdf' : 'fa-image'}"></i> 
-                        ${extension} FILE
+                    <h3 class="cert-title">${cert.title}</h3>
+                    <div class="cert-issuer">
+                        <i class="fa-solid fa-building-columns"></i>
+                        ${cert.issuer}
+                    </div>
+                    <div class="cert-footer">
+                        <div class="file-meta">
+                            <i class="fa-solid ${cert.isPdf ? 'fa-file-pdf' : 'fa-image'}"></i>
+                            ${extension}
+                        </div>
+                        <div class="verified-badge">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Verified
+                        </div>
                     </div>
                 </div>
             `;
 
             container.appendChild(card);
 
-            // 3D Tilt Effect & Glare
+            // 3D tilt + glare
             const glare = card.querySelector('.glare');
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -10;
-                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 10;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -8;
+                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 8;
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 glare.style.transform = `translate(${x - rect.width}px, ${y - rect.height}px)`;
                 glare.style.opacity = '1';
             });
             card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                 card.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                 glare.style.opacity = '0';
             });
@@ -642,39 +1299,73 @@
             });
         });
 
-        // Mouse Glow Logic
-        const cursorGlow = document.createElement('div');
-        cursorGlow.id = 'cursor-glow';
-        document.body.appendChild(cursorGlow);
+        // ─── SCROLL REVEAL (IntersectionObserver) ───
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.cert-card').forEach(card => observer.observe(card));
+
+        // ─── STATS COUNTER ───
+        function animateCounters() {
+            document.querySelectorAll('.stat-number[data-target]').forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                const duration = 2000;
+                const start = performance.now();
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 4);
+                    counter.textContent = Math.floor(target * eased);
+                    if (progress < 1) requestAnimationFrame(update);
+                    else counter.textContent = target;
+                }
+                requestAnimationFrame(update);
+            });
+        }
+        // Fire after preloader
+        setTimeout(animateCounters, 2500);
+
+        // ─── CURSOR GLOW ───
+        const cursorGlow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
             cursorGlow.style.left = e.clientX + 'px';
             cursorGlow.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
-        
-        // Add interactive glow when hovering over critical elements
+
+        // Interactive glow
         setTimeout(() => {
-            document.querySelectorAll('.view-btn, .close-btn, .cert-card').forEach(el => {
+            document.querySelectorAll('.view-btn, .close-btn, .cert-card, .filter-pill').forEach(el => {
                 el.addEventListener('mouseenter', () => {
-                    cursorGlow.style.background = 'radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%)';
-                    cursorGlow.style.width = '600px';
-                    cursorGlow.style.height = '600px';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%)';
+                    cursorGlow.style.width = '500px';
+                    cursorGlow.style.height = '500px';
                 });
                 el.addEventListener('mouseleave', () => {
-                    cursorGlow.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%)';
-                    cursorGlow.style.width = '400px';
-                    cursorGlow.style.height = '400px';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%)';
+                    cursorGlow.style.width = '350px';
+                    cursorGlow.style.height = '350px';
                 });
             });
 
-            // Magnetic Hover Buttons Logic
+            // Magnetic buttons
             document.querySelectorAll('.magnetic').forEach(btn => {
                 btn.addEventListener('mousemove', (e) => {
                     const rect = btn.getBoundingClientRect();
                     const x = (e.clientX - rect.left) - (rect.width / 2);
                     const y = (e.clientY - rect.top) - (rect.height / 2);
-                    // Slow down the transition to lock it physically to mouse
                     btn.style.transition = 'transform 0.1s ease-out';
-                    btn.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px) scale(1.05)`;
+                    btn.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px) scale(1.05)`;
                 });
                 btn.addEventListener('mouseleave', () => {
                     btn.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -683,40 +1374,91 @@
             });
         }, 500);
 
-        // Modal Logic
+        // ─── MODAL ───
         const modal = document.getElementById('certModal');
         const modalBody = document.getElementById('modalBody');
+        const modalTitle = document.getElementById('modalTitle');
+        let currentModalIndex = -1;
 
         function openModal(index) {
+            currentModalIndex = index;
             const cert = certificates[index];
-            modalBody.innerHTML = ''; // Clear previous content
+            modalBody.innerHTML = '';
+            modalTitle.textContent = cert.title;
 
             if (cert.isPdf) {
-                // Use iframe to display PDF
-                modalBody.innerHTML = `<iframe src="${cert.file}"></iframe>`;
+                modalBody.innerHTML = `<iframe src="${cert.file}" title="${cert.title}"></iframe>`;
             } else {
-                // Use img to display PNG/JPG
                 modalBody.innerHTML = `<img src="${cert.file}" alt="${cert.title}">`;
             }
 
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
+            updateNavButtons();
         }
 
         function closeModal() {
             modal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore background scrolling
-            setTimeout(() => {
-                modalBody.innerHTML = ''; // Clear iframe out of DOM after transition
-            }, 300);
+            document.body.style.overflow = 'auto';
+            setTimeout(() => { modalBody.innerHTML = ''; }, 350);
+            currentModalIndex = -1;
         }
 
-        // Close when clicking outside the modal content
+        function navigateModal(direction) {
+            if (currentModalIndex < 0) return;
+            // Get visible certificates based on current filter
+            const visibleIndices = certificates
+                .map((c, i) => i)
+                .filter(i => activeFilter === 'all' || certificates[i].category === activeFilter);
+
+            const currentPos = visibleIndices.indexOf(currentModalIndex);
+            const nextPos = currentPos + direction;
+
+            if (nextPos >= 0 && nextPos < visibleIndices.length) {
+                openModal(visibleIndices[nextPos]);
+            }
+        }
+
+        function updateNavButtons() {
+            const visibleIndices = certificates
+                .map((c, i) => i)
+                .filter(i => activeFilter === 'all' || certificates[i].category === activeFilter);
+            const currentPos = visibleIndices.indexOf(currentModalIndex);
+
+            document.getElementById('prevBtn').style.opacity = currentPos <= 0 ? '0.3' : '1';
+            document.getElementById('prevBtn').style.pointerEvents = currentPos <= 0 ? 'none' : 'auto';
+            document.getElementById('nextBtn').style.opacity = currentPos >= visibleIndices.length - 1 ? '0.3' : '1';
+            document.getElementById('nextBtn').style.pointerEvents = currentPos >= visibleIndices.length - 1 ? 'none' : 'auto';
+        }
+
+        document.getElementById('closeBtn').addEventListener('click', closeModal);
+        document.getElementById('prevBtn').addEventListener('click', () => navigateModal(-1));
+        document.getElementById('nextBtn').addEventListener('click', () => navigateModal(1));
+
+        // Close on backdrop click
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
+            if (e.target === modal) closeModal();
+        });
+
+        // ─── KEYBOARD SHORTCUTS ───
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (modal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') navigateModal(-1);
+                if (e.key === 'ArrowRight') navigateModal(1);
             }
         });
+
+        // Hide keyboard hint after a few seconds
+        setTimeout(() => {
+            const hint = document.getElementById('kbHint');
+            if (hint) {
+                setTimeout(() => {
+                    hint.style.opacity = '0';
+                    hint.style.transition = 'opacity 0.5s ease';
+                }, 8000);
+            }
+        }, 4000);
     </script>
 </body>
 </html>
