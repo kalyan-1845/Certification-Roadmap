@@ -11,39 +11,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #030303;
-            --bg-surface: #0a0a0a;
-            --surface-color: rgba(15, 15, 15, 0.6);
-            --surface-border: rgba(255, 255, 255, 0.04);
-            --text-primary: #f0f0f0;
-            --text-secondary: #6e6e6e;
-            --text-tertiary: #444;
+            --bg-color: #030201; /* Hint of warm deep obsidian */
+            --bg-surface: #0a0806;
+            --surface-color: rgba(15, 12, 10, 0.4);
+            --surface-border: rgba(255, 255, 255, 0.03);
+            --text-primary: #fdfdfd;
+            --text-secondary: #888888;
+            --text-tertiary: #555555;
             --accent-primary: #D4AF37;
-            --accent-secondary: #F3E5AB;
+            --accent-secondary: #FDE08B;
             --accent-glow: rgba(212, 175, 55, 0.15);
-            --gradient-accent: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            --gradient-accent-subtle: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(243,229,171,0.04));
-            --card-radius: 16px;
-            --transition-smooth: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient-accent: linear-gradient(135deg, #C59A3F 0%, #FDF0B5 50%, #B8862D 100%);
+            --gradient-accent-subtle: linear-gradient(135deg, rgba(197,154,63,0.1), rgba(253,240,181,0.02));
+            --card-radius: 18px;
+            --transition-smooth: cubic-bezier(0.19, 1, 0.22, 1); /* Ultra smooth ease-out */
             --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--accent-primary), rgba(212,175,55,0.3));
+            background: rgba(212,175,55,0.4);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
 
-        /* Noise overlay */
+        /* Noise overlay - Luxury frosted texture */
         body::after {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-            opacity: 0.03;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            opacity: 0.04;
             pointer-events: none;
             z-index: 99999;
         }
@@ -165,17 +165,29 @@
             100% { transform: scale(0.9) translate(-4%, -4%); }
         }
 
-        /* ── CURSOR GLOW ── */
+        /* ── CURSOR GLOW AND DOT ── */
         #cursor-glow {
             position: fixed;
             top: 0; left: 0;
-            width: 350px; height: 350px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+            width: 450px; height: 450px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 1;
-            transition: width 0.4s ease, height 0.4s ease, background 0.4s ease;
+            transition: width 0.6s var(--transition-smooth), height 0.6s var(--transition-smooth), background 0.4s ease;
+        }
+        
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 6px; height: 6px;
+            background: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 999999;
         }
 
         /* ── HEADER ── */
@@ -381,22 +393,39 @@
             border-radius: var(--card-radius);
             overflow: hidden;
             position: relative;
-            transition: all 0.5s var(--transition-smooth);
-            backdrop-filter: blur(20px);
+            transition: all 0.6s var(--transition-smooth);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             display: flex;
             flex-direction: column;
             opacity: 0;
-            transform: translateY(50px);
-            border: 1px solid transparent;
-            background:
-                linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
-                linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)) border-box;
+            transform: translateY(60px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(15, 12, 10, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05);
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+            transform: skewX(-25deg);
+            animation: cardShimmer 8s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes cardShimmer {
+            0%, 60% { left: -100%; }
+            100% { left: 200%; }
         }
 
         .cert-card.visible {
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.7s ease, transform 0.7s var(--transition-ease);
+            transition: opacity 0.8s ease, transform 0.8s var(--transition-smooth);
         }
 
         .cert-card.hidden-filter {
@@ -404,12 +433,12 @@
         }
 
         .cert-card:hover {
-            background:
-                linear-gradient(#0f0f0f, #080808) padding-box,
-                linear-gradient(135deg, var(--accent-primary), rgba(255,255,255,0.08), var(--accent-secondary)) border-box;
+            border-color: rgba(212,175,55,0.3);
+            background: rgba(15, 12, 10, 0.7);
             box-shadow:
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                0 0 40px rgba(212,175,55,0.05);
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(212,175,55,0.08),
+                inset 0 1px 1px rgba(255,255,255,0.1);
             z-index: 20;
         }
 
@@ -490,22 +519,24 @@
         .cert-card:hover .view-overlay { opacity: 1; }
 
         .view-btn {
-            background: transparent;
+            background: rgba(10,10,10,0.5);
             color: var(--text-primary);
-            padding: 0.75rem 2rem;
+            padding: 0.85rem 2.2rem;
             border-radius: 50px;
-            border: 1px solid rgba(212,175,55,0.5);
+            border: 1px solid rgba(212,175,55,0.4);
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             font-size: 0.85rem;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 0.7rem;
-            transform: translateY(15px);
-            transition: all 0.35s var(--transition-smooth);
+            gap: 0.8rem;
+            transform: translateY(20px);
+            transition: all 0.5s var(--transition-smooth);
+            backdrop-filter: blur(4px);
         }
 
         .cert-card:hover .view-btn { transform: translateY(0); }
@@ -889,8 +920,9 @@
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- Cursor Glow -->
+    <!-- Cursor Elements -->
     <div id="cursor-glow"></div>
+    <div id="cursor-dot"></div>
 
     <!-- Header -->
     <header>
@@ -1344,27 +1376,54 @@
         // Fire after preloader
         setTimeout(animateCounters, 2500);
 
-        // ─── CURSOR GLOW ───
+        // ─── CURSOR LOGIC (Fluid Follow) ───
         const cursorGlow = document.getElementById('cursor-glow');
+        const cursorDot = document.getElementById('cursor-dot');
+        let currentMouseX = window.innerWidth / 2;
+        let currentMouseY = window.innerHeight / 2;
+        let glowX = currentMouseX;
+        let glowY = currentMouseY;
+
         document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            currentMouseX = e.clientX;
+            currentMouseY = e.clientY;
+            
+            // Dot follows instantly
+            cursorDot.style.left = currentMouseX + 'px';
+            cursorDot.style.top = currentMouseY + 'px';
         });
 
-        // Interactive glow
+        // Easing loop for the large ambient glow
+        function animateCursorGlow() {
+            // LERP (Linear Interpolation) to smooth the trailing effect
+            glowX += (currentMouseX - glowX) * 0.1;
+            glowY += (currentMouseY - glowY) * 0.1;
+
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+
+            requestAnimationFrame(animateCursorGlow);
+        }
+        animateCursorGlow();
+
+        // Interactive hover states for cursor
         setTimeout(() => {
-            document.querySelectorAll('.view-btn, .close-btn, .cert-card, .filter-pill').forEach(el => {
+            document.querySelectorAll('.view-btn, .close-btn, .cert-card, .filter-pill, .modal-nav-btn, a').forEach(el => {
                 el.addEventListener('mouseenter', () => {
-                    cursorGlow.style.background = 'radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%)';
-                    cursorGlow.style.width = '500px';
-                    cursorGlow.style.height = '500px';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 65%)';
+                    cursorGlow.style.width = '600px';
+                    cursorGlow.style.height = '600px';
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(2)';
+                    cursorDot.style.backgroundColor = '#fff';
+                    cursorDot.style.boxShadow = '0 0 15px rgba(255,255,255,0.8)';
                 });
                 el.addEventListener('mouseleave', () => {
-                    cursorGlow.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%)';
-                    cursorGlow.style.width = '350px';
-                    cursorGlow.style.height = '350px';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%)';
+                    cursorGlow.style.width = '450px';
+                    cursorGlow.style.height = '450px';
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorDot.style.backgroundColor = 'var(--accent-primary)';
+                    cursorDot.style.boxShadow = '0 0 10px var(--accent-primary)';
                 });
             });
 
